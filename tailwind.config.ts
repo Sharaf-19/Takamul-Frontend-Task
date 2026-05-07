@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brown-dark': '#1C1009',
+        'brown-dark': '#4B2615',
         'brown-mid': '#4B2615',
         'off-white': '#F5F3EF',
         'text-primary': '#1C1009',
