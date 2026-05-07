@@ -1,9 +1,14 @@
-//app/[locale]/page.tsx
+import HeroSection from '@/components/sections/HeroSection';
+import { heroSlides } from '@/lib/mock/hero';
 
-export default function HomePage() {
+interface Props {
+  params: { locale: string };
+}
+
+export default function HomePage({ params: { locale } }: Props) {
   return (
-    <main className='min-h-screen bg-brown-dark text-white flex items-center justify-center'>
-      <h1 className='text-4xl font-bold'>IO-TECH — Phase 1 ✓</h1>
+    <main>
+      <HeroSection slides={heroSlides} locale={locale} />
     </main>
   );
 }
