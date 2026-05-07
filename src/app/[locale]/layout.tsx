@@ -1,3 +1,5 @@
+//app/[locale]/layout.tsx
+
 import type { Metadata } from 'next';
 import { Inter, Tajawal } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';

@@ -1,3 +1,5 @@
+//app/[locale]/page.tsx
+
 export default function HomePage() {
   return (
     <main className='min-h-screen bg-brown-dark text-white flex items-center justify-center'>

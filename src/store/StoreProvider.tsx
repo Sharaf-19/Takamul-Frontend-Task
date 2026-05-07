@@ -1,3 +1,5 @@
+//src/store/StoreProvider.tsx
+
 'use client';
 import { Provider } from 'react-redux';
 import { store } from './index';

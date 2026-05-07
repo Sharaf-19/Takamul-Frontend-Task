@@ -1,3 +1,5 @@
+//config/middleware.js
+
 module.exports = [
   'strapi::errors',
   {

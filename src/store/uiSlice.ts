@@ -1,3 +1,5 @@
+//src/store/uiSlice.ts
+
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UIState {
