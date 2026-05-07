@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "team": "Team",
+    "bookAppointment": "Book Appointment"
+  },
+  "footer": {
+    "subscribe": "Subscribe",
+    "subscribePlaceholder": "Your email address",
+    "copyright": "© 2024. All rights reserved."
+  },
+  "search": {
+    "placeholder": "Search...",
+    "results": "Search Results",
+    "noResults": "No results found",
+    "services": "Services",
+    "team": "Team"
+  },
+  "common": {
+    "readMore": "Read More",
+    "back": "Back",
+    "loading": "Loading..."
+  }
+}

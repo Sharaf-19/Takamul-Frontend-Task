@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "team": "الفريق",
+    "bookAppointment": "احجز موعداً"
+  },
+  "footer": {
+    "subscribe": "اشترك",
+    "subscribePlaceholder": "بريدك الإلكتروني",
+    "copyright": "© 2024. جميع الحقوق محفوظة."
+  },
+  "search": {
+    "placeholder": "بحث...",
+    "results": "نتائج البحث",
+    "noResults": "لا توجد نتائج",
+    "services": "الخدمات",
+    "team": "الفريق"
+  },
+  "common": {
+    "readMore": "اقرأ المزيد",
+    "back": "رجوع",
+    "loading": "جاري التحميل..."
+  }
+}
