@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import StoreProvider from '@/store/StoreProvider';
 import Navbar from '@/components/layout/Navbar';
 import '../globals.css';
+import Footer from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const tajawal = Tajawal({
@@ -31,18 +32,18 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
   const messages = await getMessages();
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
-  const fontVariable = locale === 'ar' ? tajawal.variable : inter.variable;
-  const fontClass = locale === 'ar' ? 'font-tajawal' : 'font-inter';
+  const fontClass = locale === 'ar' ? tajawal.variable : inter.variable;
 
   return (
-    <html lang={locale} dir={dir} className={fontVariable}>
-      <body className={fontClass}>
-        <StoreProvider>
-          <NextIntlClientProvider messages={messages}>
+    <html lang={locale} dir={dir} className={fontClass}>
+      <body className={locale === 'ar' ? 'font-tajawal' : 'font-inter'}>
+        <NextIntlClientProvider messages={messages}>
+          <StoreProvider>
             <Navbar locale={locale} />
-            {children}
-          </NextIntlClientProvider>
-        </StoreProvider>
+            <main className='pt-[68px]'>{children}</main>
+            <Footer locale={locale} />
+          </StoreProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

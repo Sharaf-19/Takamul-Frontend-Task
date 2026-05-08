@@ -12,6 +12,7 @@ export interface ServiceItem {
 }
 
 export const navLinks: NavLink[] = [
+  { label: 'Home', labelAr: 'الرئيسية', url: '/' },
   { label: 'About us', labelAr: 'من نحن', url: '/about' },
   { label: 'Services', labelAr: 'الخدمات', url: '/services' },
   { label: 'Our Team', labelAr: 'فريقنا', url: '/team' },
