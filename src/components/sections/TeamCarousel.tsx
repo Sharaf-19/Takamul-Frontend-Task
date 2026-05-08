@@ -42,7 +42,7 @@ export default function TeamCarousel({ members, locale }: Props) {
   const canNext = index < maxIndex;
 
   return (
-    <div className='relative flex items-center gap-4'>
+    <div className='font-dm-sans relative flex items-center gap-4'>
       {/* Prev arrow */}
       <button
         onClick={prev}

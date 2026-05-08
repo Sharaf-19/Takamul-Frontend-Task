@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Tajawal } from 'next/font/google';
-import { NextIntlClientProvider } from 'next-intl';
+import { DM_Sans, Tajawal } from 'next/font/google';import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import StoreProvider from '@/store/StoreProvider';
@@ -8,7 +7,11 @@ import Navbar from '@/components/layout/Navbar';
 import '../globals.css';
 import Footer from '@/components/layout/Footer';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
+});
+
 const tajawal = Tajawal({
   subsets: ['arabic'],
   weight: ['400', '700'],
@@ -32,10 +35,11 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
   const messages = await getMessages();
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
-  const fontClass = locale === 'ar' ? tajawal.variable : inter.variable;
+  const fontClass = locale === 'ar' ? tajawal.variable : dmSans.variable;
 
   return (
     <html lang={locale} dir={dir} className={fontClass}>
+      {/* Clean body - layout is handled by globals.css */}
       <body className={locale === 'ar' ? 'font-tajawal' : 'font-inter'}>
         <NextIntlClientProvider messages={messages}>
           <StoreProvider>

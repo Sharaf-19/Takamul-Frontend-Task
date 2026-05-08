@@ -26,14 +26,14 @@ export default function ClientsSection({ locale }: Props) {
       <div className='mx-auto max-w-container px-6'>
         {/* Heading — DM Sans, 700, 40px, lh 52px */}
         <h2
-          className='text-white font-bold leading-[52px] tracking-normal mb-6
-            text-[28px] sm:text-[40px]'
-          style={{ fontFamily: 'DM Sans' }}>
+          className='font-dm-sans text-white font-bold leading-[52px] tracking-normal mb-6
+            text-[28px] sm:text-[40px]'>
           {isAr ? headingAr : heading}
         </h2>
 
         {/* Intro paragraph */}
-        <p className='text-white/60 text-[13px] leading-[1.7] max-w-[500px] mb-10'>
+        <p
+          className='font-dm-sans text-white/70 text-[18px] leading-tight max-w-[579px] mb-10 font-normal'>
           {isAr ? introAr : intro}
         </p>
 
@@ -54,10 +54,9 @@ export default function ClientsSection({ locale }: Props) {
           <div className='flex flex-col justify-between w-full sm:h-[374px]'>
             {/* Quote — DM Sans, 400, 24px, lh 40px, opacity 60%, 728×200 */}
             <p
-              className='text-white/60 font-normal tracking-normal
+              className='font-dm-sans text-white/60 font-normal tracking-normal
                 max-w-[728px] max-h-[200px] overflow-hidden
-                text-[16px] leading-[26px] sm:text-[24px] sm:leading-[40px]'
-              style={{ fontFamily: 'DM Sans' }}>
+                text-[16px] leading-[26px] sm:text-[24px] sm:leading-[40px]'>
               {isAr ? testimonial.quoteAr : testimonial.quote}
             </p>
 
@@ -66,8 +65,7 @@ export default function ClientsSection({ locale }: Props) {
               {/* Name — Poppins, 600, 24px, lh 45px */}
               <p
                 className='text-white font-semibold tracking-normal
-                  text-[18px] leading-[30px] sm:text-[24px] sm:leading-[45px]'
-                style={{ fontFamily: 'Poppins' }}>
+                  text-[18px] leading-[30px] sm:text-[24px] sm:leading-[45px]'>
                 {isAr ? testimonial.nameAr : testimonial.name}
               </p>
               {/* Role — Poppins, 14px, lh 24px */}

@@ -13,6 +13,7 @@ const config: Config = {
         'gold-accent': '#8B6914',
       },
       fontFamily: {
+        'dm-sans': ['var(--font-dm-sans)'],
         inter: ['var(--font-inter)'],
         tajawal: ['var(--font-tajawal)'],
       },
