@@ -71,7 +71,7 @@ export default function Footer({ locale }: Props) {
 
   return (
     <footer className='bg-brown-dark'>
-      <div className='mx-auto max-w-container px-6 py-8'>
+      <div className='font-dm-sans mx-auto max-w-container px-6 py-8'>
         {/* Top row: Subscribe form (left/center) + Contacts + Social (right) */}
         <div className='flex flex-col md:flex-row md:items-center md:justify-end gap-4 md:gap-8 mb-6'>
           {/* Subscribe form */}

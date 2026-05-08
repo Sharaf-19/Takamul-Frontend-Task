@@ -94,7 +94,7 @@ export default function HeroSection({ slides, locale }: Props) {
       </div>
 
       {/* Slide content */}
-      <div className='relative z-10 mx-auto max-w-container px-6 h-screen flex flex-col justify-end pb-24'>
+      <div className='font-dm-sans relative z-10 mx-auto max-w-container px-6 h-screen flex flex-col justify-end pb-24'>
         <div
           className={`max-w-lg transition-opacity duration-500 ${
             transitioning ? 'opacity-0' : 'opacity-100'
@@ -112,6 +112,20 @@ export default function HeroSection({ slides, locale }: Props) {
           </Link>
         </div>
       </div>
+
+      {/* Person image — bottom-right, desktop only */}
+      {slide.personImage && (
+        <div className='absolute bottom-0 end-16 z-10 hidden lg:block'>
+          <Image
+            src={slide.personImage}
+            alt='Featured person'
+            width={500}
+            height={520}
+            className='object-contain'
+            priority
+          />
+        </div>
+      )}
 
       {/* Vertical slide dots */}
       <div className='absolute start-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3'>

@@ -27,7 +27,7 @@ export const heroSlides: HeroSlide[] = [
     ctaUrl: '/services',
     backgroundImage: '/images/hero-bg-1.jpg',
     videoUrl: '/images/hero-video.mp4', // Optional: If you want to use a video background
-    personImage: '/images/hero-person.png',
+    personImage: '/images/owner.svg',
     type: 'video',
   },
   {

@@ -27,7 +27,7 @@ export default function NavLinks({ links, serviceColumns, locale }: Props) {
   //const servicesLabel = locale === 'ar' ? 'الخدمات' : 'Services';
 
   return (
-    <nav className='relative flex items-center gap-6'>
+    <nav className='font-dm-sans relative flex items-center gap-6'>
       {links.map(link => {
         const isServices = link.label === 'Services';
         const label = locale === 'ar' ? link.labelAr : link.label;
