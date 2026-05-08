@@ -1,5 +1,5 @@
 import Link from 'next/link';
-//import Image from 'next/image';
+import Image from 'next/image';
 import { navLinks, serviceColumns } from '@/lib/mock/navigation';
 import NavbarClient from './NavbarClient';
 
@@ -13,12 +13,14 @@ export default function Navbar({ locale }: Props) {
       <div className='mx-auto max-w-container h-full px-6 flex items-center justify-between'>
         {/* Logo */}
         <Link href={`/${locale}`} className='flex items-center gap-2 shrink-0'>
-          <div className='w-10 h-10 bg-white/10 rounded flex items-center justify-center'>
-            <span className='text-white text-xs font-bold'>IO</span>
-          </div>
-          <span className='text-white font-bold text-sm hidden sm:block'>
-            {locale === 'ar' ? 'آيو تك' : 'IO-TECH'}
-          </span>
+          <Image
+            src='/images/logo.svg'
+            alt={locale === 'ar' ? 'آيو تك' : 'IO-TECH'}
+            width={120}
+            height={40}
+            className='h-8 w-auto'
+            priority
+          />
         </Link>
 
         {/* Client-side interactive part */}

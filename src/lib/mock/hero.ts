@@ -26,8 +26,9 @@ export const heroSlides: HeroSlide[] = [
     ctaLabelAr: 'اقرأ المزيد',
     ctaUrl: '/services',
     backgroundImage: '/images/hero-bg-1.jpg',
+    videoUrl: '/images/hero-video.mp4', // Optional: If you want to use a video background
     personImage: '/images/hero-person.png',
-    type: 'image',
+    type: 'video',
   },
   {
     id: 2,
@@ -39,7 +40,7 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: 'Our Services',
     ctaLabelAr: 'خدماتنا',
     ctaUrl: '/services',
-    backgroundImage: '/images/hero-bg-2.jpg',
+    backgroundImage: '/images/hero-bg-1.jpg',
     personImage: null,
     type: 'image',
   },

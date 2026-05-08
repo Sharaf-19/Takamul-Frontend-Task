@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeroSlide } from '@/types/navigation';
@@ -12,6 +12,7 @@ interface Props {
 export default function HeroSection({ slides, locale }: Props) {
   const [current, setCurrent] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const goTo = useCallback(
     (index: number) => {
@@ -25,32 +26,48 @@ export default function HeroSection({ slides, locale }: Props) {
     [transitioning],
   );
 
-  // Auto-play
-  useEffect(() => {
-    const timer = setInterval(() => {
-      goTo((current + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [current, slides.length, goTo]);
-
   const slide = slides[current];
+  const isVideo = slide.type === 'video' && !!slide.videoUrl;
   const headline = locale === 'ar' ? slide.headlineAr : slide.headline;
   const subheadline = locale === 'ar' ? slide.subheadlineAr : slide.subheadline;
   const ctaLabel = locale === 'ar' ? slide.ctaLabelAr : slide.ctaLabel;
+
+  const advance = useCallback(() => {
+    goTo((current + 1) % slides.length);
+  }, [current, slides.length, goTo]);
+
+  // Auto-play — only for image slides
+  useEffect(() => {
+    if (isVideo) return;
+
+    const timer = setInterval(() => {
+      advance();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [current, isVideo, advance]);
+
+  // Video: advance when it finishes
+  const handleVideoEnded = useCallback(() => {
+    advance();
+  }, [advance]);
 
   return (
     <section className='relative w-full min-h-screen overflow-hidden'>
       {/* Background */}
       <div
-        className={`absolute inset-0 transition-opacity duration-500 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
-        {slide.type === 'video' && slide.videoUrl ? (
+        className={`absolute inset-0 transition-opacity duration-500 ${
+          transitioning ? 'opacity-0' : 'opacity-100'
+        }`}>
+        {isVideo ? (
           <video
+            ref={videoRef}
             key={slide.videoUrl}
             src={slide.videoUrl}
             autoPlay
             muted
-            loop
+            loop={false}
             playsInline
+            onEnded={handleVideoEnded}
             className='absolute inset-0 w-full h-full object-cover'
           />
         ) : (
@@ -65,20 +82,23 @@ export default function HeroSection({ slides, locale }: Props) {
           />
         )}
 
-        {/* Brown gradient overlay — from design.md */}
-        {/* <div
+        {/* Gradient overlay */}
+        <div
           className='absolute inset-0'
           style={{
-            background:
-              'linear-gradient(to right, rgba(75,38,21,0.68) 0%, rgba(75,38,21,0.28) 100%)',
+            background: isVideo
+              ? 'linear-gradient(to right, rgba(75,38,21,0.85) 0%, rgba(75,38,21,0.45) 100%)'
+              : 'linear-gradient(to right, rgba(75,38,21,0.68) 0%, rgba(75,38,21,0.28) 100%)',
           }}
-        /> */}
+        />
       </div>
 
-      {/* Slide content — bottom-left */}
+      {/* Slide content */}
       <div className='relative z-10 mx-auto max-w-container px-6 h-screen flex flex-col justify-end pb-24'>
         <div
-          className={`max-w-lg transition-opacity duration-500 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
+          className={`max-w-lg transition-opacity duration-500 ${
+            transitioning ? 'opacity-0' : 'opacity-100'
+          }`}>
           <h1 className='text-white text-4xl md:text-[48px] font-bold leading-tight mb-4'>
             {headline}
           </h1>
@@ -93,16 +113,16 @@ export default function HeroSection({ slides, locale }: Props) {
         </div>
       </div>
 
-
-      {/* Vertical slide dots — left edge */}
+      {/* Vertical slide dots */}
       <div className='absolute start-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3'>
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goTo(index)}
             aria-label={`Go to slide ${index + 1}`}
-            className={`w-2 h-2 rounded-full border border-white transition-all duration-200
-              ${index === current ? 'bg-white' : 'bg-transparent'}`}
+            className={`w-2 h-2 rounded-full border border-white transition-all duration-200 ${
+              index === current ? 'bg-white' : 'bg-transparent'
+            }`}
           />
         ))}
       </div>
