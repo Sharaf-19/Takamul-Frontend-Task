@@ -77,9 +77,9 @@ export default async function HomePage({ params: { locale } }: Props) {
 
   return (
     <main>
-      <HeroSection slides={slides} locale={locale} />
-      <TeamSection locale={locale} members={teamMembers} />
-      <ClientsSection locale={locale} config={clientsConfig} />
+      {slides.length > 0 && <HeroSection slides={slides} locale={locale} />}
+      {teamMembers.length > 0 && <TeamSection locale={locale} members={teamMembers} />}
+      {testimonials.length > 0 && <ClientsSection locale={locale} config={clientsConfig} />}
     </main>
   );
 }
