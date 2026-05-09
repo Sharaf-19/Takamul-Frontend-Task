@@ -172,6 +172,14 @@ NEXT_PUBLIC_SITE_URL=https://binhindi.sa
 
 The app can still render some areas without live CMS data, but the homepage, team page, search, services, and navigation/footer features expect Strapi endpoints to exist for full functionality.
 
+For production CMS media, `NEXT_PUBLIC_STRAPI_URL` should point to the deployed Strapi origin, for example:
+
+```env
+NEXT_PUBLIC_STRAPI_URL=https://takamul-cms-strapi-task-production.up.railway.app
+```
+
+If this value changes, make sure the same host is also allowed in Next.js image optimization config under `images.remotePatterns`.
+
 ## Scripts
 
 ```bash
@@ -195,6 +203,7 @@ Open:
 
 ## Notes
 
-- There are both `next.config.ts` and `next.config.mjs` files in the repo. That should be reviewed to avoid duplicated configuration sources.
+- There are both `next.config.ts` and `next.config.mjs` files in the repo. Next can resolve `next.config.mjs` as the active config, so changes to image settings must be kept in sync until the project is consolidated to a single config file.
+- Remote Strapi uploads used by `next/image` must be listed in `images.remotePatterns`. Missing the production Strapi host will cause `/_next/image` requests to return `400 Bad Request`, which breaks hero background images and other CMS-hosted raster media.
 - The root `src/app/layout.tsx` still contains default Next.js starter metadata, while the localized layout contains the actual site metadata.
 - Because Git history is currently blocked by a safe-directory ownership warning in this environment, this README reflects the current codebase state rather than a verified commit-by-commit change log.

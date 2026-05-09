@@ -17,6 +17,11 @@ const nextConfig = {
         hostname: 'takamul-cms-strapi-task-production.up.railway.app',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
     ],
   },
 };
