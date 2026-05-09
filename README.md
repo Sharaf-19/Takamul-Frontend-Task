@@ -161,24 +161,9 @@ The fetch helper uses:
 
 Some pages still fall back to local mock data in `src/lib/mock`.
 
-## Environment Variables
-
-Expected environment variables:
-
-```env
-NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-NEXT_PUBLIC_SITE_URL=https://binhindi.sa
-```
 
 The app can still render some areas without live CMS data, but the homepage, team page, search, services, and navigation/footer features expect Strapi endpoints to exist for full functionality.
 
-For production CMS media, `NEXT_PUBLIC_STRAPI_URL` should point to the deployed Strapi origin, for example:
-
-```env
-NEXT_PUBLIC_STRAPI_URL=https://takamul-cms-strapi-task-production.up.railway.app
-```
-
-If this value changes, make sure the same host is also allowed in Next.js image optimization config under `images.remotePatterns`.
 
 ## Scripts
 
