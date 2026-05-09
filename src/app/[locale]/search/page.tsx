@@ -13,27 +13,31 @@ import Pagination from '@/components/ui/Pagination';
 import EmptyState from '@/components/ui/EmptyState';
 
 interface Props {
-  params: { locale: string };
-  searchParams: { query?: string; category?: string; page?: string };
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ query?: string; category?: string; page?: string }>;
 }
 
-export function generateMetadata({ params: { locale }, searchParams }: Props) {
-  const query = searchParams.query ?? '';
+export async function generateMetadata({ params, searchParams }: Props) {
+  const { locale } = await params;
+  const { query = '' } = await searchParams;
   return {
-    title: locale === 'ar' ? `نتائج البحث: ${query} | Bin Hindi` : `Search: ${query} | Bin Hindi`,
+    title: locale === 'ar' ? `نتائج البحث: ${query} | IO-TECH` : `Search: ${query} | IO-TECH`,
   };
 }
 
 const VALID_CATEGORIES: SearchCategory[] = ['team', 'services'];
 
-export default async function SearchPage({ params: { locale }, searchParams }: Props) {
-  const query = searchParams.query?.trim() ?? '';
-  const rawCategory = searchParams.category ?? 'services';
-  const page = parseInt(searchParams.page ?? '1', 10);
+export default async function SearchPage({ params, searchParams }: Props) {
+  const { locale } = await params;
+  const { query: rawQuery, category: rawCategory, page: rawPage } = await searchParams;
+
+  const query = rawQuery?.trim() ?? '';
+  const rawCat = rawCategory ?? 'services';
+  const page = parseInt(rawPage ?? '1', 10);
   const isAr = locale === 'ar';
 
-  const category: SearchCategory = VALID_CATEGORIES.includes(rawCategory as SearchCategory)
-    ? (rawCategory as SearchCategory)
+  const category: SearchCategory = VALID_CATEGORIES.includes(rawCat as SearchCategory)
+    ? (rawCat as SearchCategory)
     : 'services';
 
   if (!query) notFound();
@@ -100,7 +104,15 @@ export default async function SearchPage({ params: { locale }, searchParams }: P
               {items.length === 0 ? (
                 <EmptyState
                   query={query}
-                  category={isAr ? (category === 'team' ? 'الفريق' : 'الخدمات') : category === 'team' ? 'Team' : 'Services'}
+                  category={
+                    isAr
+                      ? category === 'team'
+                        ? 'الفريق'
+                        : 'الخدمات'
+                      : category === 'team'
+                        ? 'Team'
+                        : 'Services'
+                  }
                   locale={locale}
                 />
               ) : (

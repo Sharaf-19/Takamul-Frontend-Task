@@ -1,63 +1,82 @@
-// src/app/[locale]/layout.tsx
+// src/app/[locale]/page.tsx
 
-import type { Metadata } from 'next';
-import { DM_Sans, Tajawal } from 'next/font/google';
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import StoreProvider from '@/store/StoreProvider';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import '../globals.css';
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-dm-sans',
-});
-
-const tajawal = Tajawal({
-  subsets: ['arabic'],
-  weight: ['400', '700'],
-  variable: '--font-tajawal',
-});
-
-const locales = ['en', 'ar'];
-
-export function generateStaticParams() {
-  return locales.map(locale => ({ locale }));
-}
-
-export const metadata: Metadata = {
-  title: 'Bin Hindi',
-  description: 'Bin Hindi Services',
-};
+import { getHeroSlides } from '@/lib/api/hero';
+import { getTeamMembers } from '@/lib/api/team';
+import { getTestimonials } from '@/lib/api/testimonials';
+import { getStrapiMediaUrl } from '@/lib/api/strapi';
+import HeroSection from '@/components/sections/HeroSection';
+import TeamSection from '@/components/sections/TeamSection';
+import ClientsSection from '@/components/sections/ClientSection';
+import { HeroSlide } from '@/types/navigation';
+import { TeamMember } from '@/types/team';
+import { Testimonial, ClientsConfig } from '@/types/client';
 
 interface Props {
-  children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
-export default async function LocaleLayout({ children, params: { locale } }: Props) {
-  if (!locales.includes(locale)) notFound();
+export default async function HomePage({ params }: Props) {
+  const { locale } = await params;
 
-  setRequestLocale(locale);
+  const [rawSlides, rawTeam, rawTestimonials] = await Promise.all([
+    getHeroSlides(locale),
+    getTeamMembers(locale),
+    getTestimonials(locale),
+  ]);
 
-  const messages = await getMessages();
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
-  const fontClass = locale === 'ar' ? tajawal.variable : dmSans.variable;
+  const slides: HeroSlide[] = rawSlides.map(slide => {
+    const isVideoSlide = slide.order === 1;
+    return {
+      id: slide.id,
+      headline: slide.headline ?? '',
+      headlineAr: slide.headline ?? '',
+      subheadline: slide.subheadline ?? '',
+      subheadlineAr: slide.subheadline ?? '',
+      ctaLabel: slide.ctaLabel ?? '',
+      ctaLabelAr: slide.ctaLabel ?? '',
+      ctaUrl: slide.ctaUrl ?? '/services',
+      backgroundImage: getStrapiMediaUrl(slide.backgroundImage?.url) ?? '/images/hero-bg-1.jpg',
+      personImage: getStrapiMediaUrl(slide.personImage?.url) ?? null,
+      type: isVideoSlide ? ('video' as const) : ('image' as const),
+      videoUrl: isVideoSlide ? '/images/hero-video.mp4' : undefined,
+    };
+  });
+
+  const teamMembers: TeamMember[] = rawTeam.map(member => ({
+    id: member.id,
+    name: member.name ?? '',
+    nameAr: member.name ?? '',
+    role: member.role ?? '',
+    roleAr: member.role ?? '',
+    photo: getStrapiMediaUrl(member.photo?.url) ?? '/images/person1.png',
+    socialLinks: {},
+  }));
+
+  const testimonials: Testimonial[] = rawTestimonials.map(t => ({
+    id: t.id,
+    quote: t.quote ?? '',
+    quoteAr: t.quote ?? '',
+    name: t.name ?? '',
+    nameAr: t.name ?? '',
+    role: t.role ?? '',
+    roleAr: t.role ?? '',
+    photo: getStrapiMediaUrl(t.photo?.url) ?? '/images/person1.png',
+  }));
+
+  const clientsConfig: ClientsConfig = {
+    heading: 'What our clients are saying',
+    headingAr: 'ما يقوله عملاؤنا',
+    intro:
+      'Our clients range from individual investors, to local, international as well as fortune 500 companies.',
+    introAr: 'يتنوع عملاؤنا بين المستثمرين الأفراد والشركات المحلية والدولية وشركات فورتشن 500.',
+    testimonials,
+  };
 
   return (
-    <html lang={locale} dir={dir} className={fontClass}>
-      <body className={locale === 'ar' ? 'font-tajawal' : 'font-dm-sans'}>
-        <NextIntlClientProvider messages={messages}>
-          <StoreProvider>
-            <Navbar locale={locale} />
-            <main className='pt-[68px]'>{children}</main>
-            <Footer locale={locale} />
-          </StoreProvider>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <main>
+      {slides.length > 0 && <HeroSection slides={slides} locale={locale} />}
+      {teamMembers.length > 0 && <TeamSection locale={locale} members={teamMembers} />}
+      {testimonials.length > 0 && <ClientsSection locale={locale} config={clientsConfig} />}
+    </main>
   );
 }

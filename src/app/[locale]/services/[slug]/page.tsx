@@ -9,7 +9,7 @@ import HeroShort from '@/components/sections/HeroShort';
 import StrapiBlocksRenderer from '@/components/ui/StrapiBlocksRenderer';
 
 interface Props {
-  params: { locale: string; slug: string };
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
   return locales.flatMap(locale => slugs.map(slug => ({ locale, slug })));
 }
 
-export async function generateMetadata({ params: { locale, slug } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { locale, slug } = await params;
   const service = await getServiceBySlug(slug, locale);
   if (!service) return {};
   return {
@@ -27,7 +28,8 @@ export async function generateMetadata({ params: { locale, slug } }: Props) {
   };
 }
 
-export default async function ServiceDetailPage({ params: { locale, slug } }: Props) {
+export default async function ServiceDetailPage({ params }: Props) {
+  const { locale, slug } = await params;
   setRequestLocale(locale);
 
   const service = await getServiceBySlug(slug, locale);

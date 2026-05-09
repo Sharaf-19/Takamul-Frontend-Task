@@ -10,17 +10,20 @@ import TeamSection from '@/components/sections/TeamSection';
 import ClientsSection from '@/components/sections/ClientSection';
 
 interface Props {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
-export function generateMetadata({ params: { locale } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
   return {
-    title: locale === 'ar' ? 'فريقنا | Bin Hindi' : 'Our Team | Bin Hindi',
-    description: locale === 'ar' ? 'تعرّف على فريق Bin Hindi المتخصص' : 'Meet the Bin Hindi team',
+    title: locale === 'ar' ? 'فريقنا | IO-TECH' : 'Our Team | IO-TECH',
+    description: locale === 'ar' ? 'تعرّف على فريق IO-TECH المتخصص' : 'Meet the IO-TECH team',
   };
 }
 
-export default async function TeamPage({ params: { locale } }: Props) {
+export default async function TeamPage({ params }: Props) {
+  const { locale } = await params;
+
   const [rawTeam, rawTestimonials] = await Promise.all([
     getTeamMembers(locale),
     getTestimonials(locale),
