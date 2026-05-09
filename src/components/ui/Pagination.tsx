@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function Pagination({ currentPage, pageCount, buildHref, locale }: Props) {
-  if (pageCount <= 1) return null;
+  //if (pageCount <= 1) return null;
 
   const isAr = locale === 'ar';
 

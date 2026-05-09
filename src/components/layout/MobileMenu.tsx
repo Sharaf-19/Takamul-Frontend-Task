@@ -18,7 +18,7 @@ export default function MobileMenu({ links, serviceColumns, locale, onClose }: P
   return (
     <div className='fixed inset-0 bg-brown-dark z-50 overflow-y-auto'>
       <div className='flex items-center justify-between px-4 h-[68px] border-b border-white/10'>
-        <span className='text-white font-bold text-lg'>IO-TECH</span>
+        <span className='text-white font-bold text-lg'>Bin Hindi</span>
         <button onClick={onClose} aria-label='Close menu' className='text-white p-2'>
           <X size={22} />
         </button>

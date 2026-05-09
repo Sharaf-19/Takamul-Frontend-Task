@@ -1,8 +1,11 @@
+// src/app/[locale]/search/page.tsx
+
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
-import { searchMock } from '@/lib/mock/search';
-import { SearchCategory } from '@/types/search';
+import { searchServices } from '@/lib/api/services';
+import { searchTeamMembers } from '@/lib/api/team';
+import { SearchCategory, SearchResultItem } from '@/types/search';
 import HeroShort from '@/components/sections/HeroShort';
 import SearchSidebar from '@/components/search/SearchSidebar';
 import SearchResults from '@/components/search/SearchResults';
@@ -17,13 +20,13 @@ interface Props {
 export function generateMetadata({ params: { locale }, searchParams }: Props) {
   const query = searchParams.query ?? '';
   return {
-    title: locale === 'ar' ? `نتائج البحث: ${query} | IO-TECH` : `Search: ${query} | IO-TECH`,
+    title: locale === 'ar' ? `نتائج البحث: ${query} | Bin Hindi` : `Search: ${query} | Bin Hindi`,
   };
 }
 
 const VALID_CATEGORIES: SearchCategory[] = ['team', 'services'];
 
-export default function SearchPage({ params: { locale }, searchParams }: Props) {
+export default async function SearchPage({ params: { locale }, searchParams }: Props) {
   const query = searchParams.query?.trim() ?? '';
   const rawCategory = searchParams.category ?? 'services';
   const page = parseInt(searchParams.page ?? '1', 10);
@@ -35,10 +38,32 @@ export default function SearchPage({ params: { locale }, searchParams }: Props) 
 
   if (!query) notFound();
 
-  const results = searchMock(query, category, page, locale);
-  const teamTotal = searchMock(query, 'team', 1, locale).pagination.total;
-  const servicesTotal = searchMock(query, 'services', 1, locale).pagination.total;
+  const [activeResults, servicesCount, teamCount] = await Promise.all([
+    category === 'services'
+      ? searchServices(query, locale, page)
+      : searchTeamMembers(query, locale, page),
+    searchServices(query, locale, 1, 1),
+    searchTeamMembers(query, locale, 1, 1),
+  ]);
 
+  const items: SearchResultItem[] =
+    category === 'services'
+      ? activeResults.data.map(s => ({
+          id: s.id,
+          title: (s as { title?: string }).title ?? '',
+          excerpt: (s as { excerpt?: string }).excerpt ?? '',
+          url: `/${locale}/services/${(s as { slug?: string }).slug ?? ''}`,
+          category: 'services' as const,
+        }))
+      : activeResults.data.map(m => ({
+          id: m.id,
+          title: (m as { name?: string }).name ?? '',
+          excerpt: (m as { role?: string }).role ?? '',
+          url: `/${locale}/team`,
+          category: 'team' as const,
+        }));
+
+  const pagination = activeResults.meta.pagination;
   const backLabel = isAr ? 'رجوع' : 'Back';
 
   const buildHref = (p: number) => {
@@ -52,20 +77,16 @@ export default function SearchPage({ params: { locale }, searchParams }: Props) 
 
       <div className='bg-white min-h-[calc(100vh-68px)]'>
         <div className='mx-auto max-w-container px-6 py-8'>
-          {/* TWO-COLUMN LAYOUT */}
           <div className='flex flex-col md:flex-row gap-8'>
-            {/* Left sidebar */}
             <SearchSidebar
               query={query}
               activeCategory={category}
               locale={locale}
-              teamCount={teamTotal}
-              servicesCount={servicesTotal}
+              teamCount={teamCount.meta.pagination.total}
+              servicesCount={servicesCount.meta.pagination.total}
             />
 
-            {/* Right column — Results area */}
             <div className='flex-1 min-w-0'>
-              {/* BACK BUTTON — positioned inside the right column */}
               <div className='mb-8'>
                 <Link
                   href={`/${locale}`}
@@ -76,30 +97,20 @@ export default function SearchPage({ params: { locale }, searchParams }: Props) 
                 </Link>
               </div>
 
-              {/* Search Results */}
-              {results.items.length === 0 ? (
+              {items.length === 0 ? (
                 <EmptyState
                   query={query}
-                  category={
-                    isAr
-                      ? category === 'team'
-                        ? 'الفريق'
-                        : 'الخدمات'
-                      : category === 'team'
-                        ? 'Team'
-                        : 'Services'
-                  }
+                  category={isAr ? (category === 'team' ? 'الفريق' : 'الخدمات') : category === 'team' ? 'Team' : 'Services'}
                   locale={locale}
                 />
               ) : (
-                <SearchResults items={results.items} locale={locale} />
+                <SearchResults items={items} locale={locale} />
               )}
 
-              {/* Pagination */}
               <div className='pt-8'>
                 <Pagination
-                  currentPage={results.pagination.page}
-                  pageCount={results.pagination.pageCount}
+                  currentPage={pagination.page}
+                  pageCount={pagination.pageCount}
                   buildHref={buildHref}
                   locale={locale}
                 />

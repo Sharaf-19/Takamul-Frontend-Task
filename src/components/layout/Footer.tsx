@@ -1,7 +1,8 @@
 // src/components/layout/Footer.tsx
 
 import Link from 'next/link';
-import { footerConfig } from '@/lib/mock/footer';
+import { getFooterConfig } from '@/lib/api/navigation';
+import { footerConfig as fallbackConfig } from '@/lib/mock/footer';
 import SubscribeForm from '@/components/forms/SubscribeForm';
 
 // Custom X (Twitter) icon
@@ -19,7 +20,6 @@ function TwitterIcon() {
   );
 }
 
-// Custom Facebook icon
 function FacebookIcon() {
   return (
     <svg
@@ -34,7 +34,6 @@ function FacebookIcon() {
   );
 }
 
-// Temporary G+ icon — lucide dropped it; simple SVG placeholder
 function GooglePlusIcon() {
   return (
     <svg
@@ -53,39 +52,40 @@ interface Props {
   locale: string;
 }
 
-export default function Footer({ locale }: Props) {
+export default async function Footer({ locale }: Props) {
   const isAr = locale === 'ar';
-  const {
-    navLinks,
-    socialLinks,
-    copyrightText,
-    copyrightTextAr,
-    contactsLabel,
-    contactsLabelAr,
-    contactsUrl,
-  } = footerConfig;
 
-  // Placeholder translation — will move to messages/*.json
+  // Fetch from Strapi, fall back to mock if Strapi is unavailable
+  const cmsConfig = await getFooterConfig(locale).catch(() => null);
+
+  const navLinks = cmsConfig?.navLinks ?? fallbackConfig.navLinks;
+  const socialLinks = cmsConfig?.socialLinks ?? fallbackConfig.socialLinks;
+  const copyrightText =
+    cmsConfig?.copyrightText ??
+    (isAr ? fallbackConfig.copyrightTextAr : fallbackConfig.copyrightText);
+  const contactsLabel =
+    cmsConfig?.contactsLabel ??
+    (isAr ? fallbackConfig.contactsLabelAr : fallbackConfig.contactsLabel);
+  const contactsUrl = cmsConfig?.contactsUrl ?? fallbackConfig.contactsUrl;
+
   const subscribePlaceholder = isAr ? 'البريد الإلكتروني' : 'Email';
   const subscribeButton = isAr ? 'اشتراك' : 'Subscribe';
 
   return (
     <footer className='bg-brown-dark'>
       <div className='font-dm-sans mx-auto max-w-container px-6 py-8'>
-        {/* Top row: Subscribe form (left/center) + Contacts + Social (right) */}
+        {/* Top row: Subscribe form + Contacts + Social */}
         <div className='flex flex-col md:flex-row md:items-center md:justify-end gap-4 md:gap-8 mb-6'>
-          {/* Subscribe form */}
           <SubscribeForm placeholder={subscribePlaceholder} buttonLabel={subscribeButton} />
 
-          {/* Contacts + social icons */}
           <div className='flex items-center gap-5 shrink-0'>
             <Link
               href={`/${locale}${contactsUrl}`}
               className='text-white text-[13px] hover:text-white/70 transition-colors duration-200'>
-              {isAr ? contactsLabelAr : contactsLabel}
+              {contactsLabel}
             </Link>
 
-            {socialLinks.map(link => (
+            {socialLinks.map((link: { platform: string; url: string; ariaLabel: string }) => (
               <a
                 key={link.platform}
                 href={link.url}
@@ -101,27 +101,22 @@ export default function Footer({ locale }: Props) {
           </div>
         </div>
 
-        {/* Divider */}
         <hr className='border-white/20 mb-6' />
 
-        {/* Bottom row: nav links (left) + copyright (right) */}
+        {/* Bottom row: nav links + copyright */}
         <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
-          {/* Nav links */}
           <nav aria-label='Footer navigation' className='flex flex-wrap gap-x-6 gap-y-2'>
-            {navLinks.map(link => (
+            {navLinks.map((link: { label: string; labelAr?: string; url: string }) => (
               <Link
                 key={link.url}
                 href={`/${locale}${link.url}`}
                 className='text-white text-[13px] hover:text-white/70 transition-colors duration-200'>
-                {isAr ? link.labelAr : link.label}
+                {isAr && link.labelAr ? link.labelAr : link.label}
               </Link>
             ))}
           </nav>
 
-          {/* Copyright */}
-          <p className='text-white/60 text-[12px] shrink-0'>
-            {isAr ? copyrightTextAr : copyrightText}
-          </p>
+          <p className='text-white/60 text-[12px] shrink-0'>{copyrightText}</p>
         </div>
       </div>
     </footer>
