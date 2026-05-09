@@ -3,6 +3,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { setRequestLocale } from 'next-intl/server';
 import { getServiceBySlug, getAllServiceSlugs } from '@/lib/api/services';
 import HeroShort from '@/components/sections/HeroShort';
 import StrapiBlocksRenderer from '@/components/ui/StrapiBlocksRenderer';
@@ -27,6 +28,8 @@ export async function generateMetadata({ params: { locale, slug } }: Props) {
 }
 
 export default async function ServiceDetailPage({ params: { locale, slug } }: Props) {
+  setRequestLocale(locale);
+
   const service = await getServiceBySlug(slug, locale);
   if (!service) notFound();
 
