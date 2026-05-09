@@ -3,10 +3,16 @@
 import { getHeroSlides } from '@/lib/api/hero';
 import { getTeamMembers } from '@/lib/api/team';
 import { getTestimonials } from '@/lib/api/testimonials';
-import { getStrapiMediaUrl } from '@/lib/api/strapi';
 import HeroSection from '@/components/sections/HeroSection';
 import TeamSection from '@/components/sections/TeamSection';
 import ClientsSection from '@/components/sections/ClientSection';
+import {
+  getHeroSlideBackground,
+  getHeroSlidePersonImage,
+  getTeamMemberPhoto,
+  getTeamMemberSocialLinks,
+  getTestimonialPhoto,
+} from '@/lib/local-media';
 import { HeroSlide } from '@/types/navigation';
 import { TeamMember } from '@/types/team';
 import { Testimonial, ClientsConfig } from '@/types/client';
@@ -24,7 +30,7 @@ export default async function HomePage({ params }: Props) {
     getTestimonials(locale),
   ]);
 
-  const slides: HeroSlide[] = rawSlides.map(slide => {
+  const slides: HeroSlide[] = rawSlides.map((slide, index) => {
     const isVideoSlide = slide.order === 1;
     return {
       id: slide.id,
@@ -35,24 +41,24 @@ export default async function HomePage({ params }: Props) {
       ctaLabel: slide.ctaLabel ?? '',
       ctaLabelAr: slide.ctaLabel ?? '',
       ctaUrl: slide.ctaUrl ?? '/services',
-      backgroundImage: getStrapiMediaUrl(slide.backgroundImage?.url) ?? '/images/hero-bg-1.jpg',
-      personImage: getStrapiMediaUrl(slide.personImage?.url) ?? 'images/owner.svg',
+      backgroundImage: getHeroSlideBackground(index),
+      personImage: getHeroSlidePersonImage(),
       type: isVideoSlide ? ('video' as const) : ('image' as const),
       videoUrl: isVideoSlide ? '/images/hero-video.mp4' : undefined,
     };
   });
 
-  const teamMembers: TeamMember[] = rawTeam.map(member => ({
+  const teamMembers: TeamMember[] = rawTeam.map((member, index) => ({
     id: member.id,
     name: member.name ?? '',
     nameAr: member.name ?? '',
     role: member.role ?? '',
     roleAr: member.role ?? '',
-    photo: getStrapiMediaUrl(member.photo?.url) ?? '/images/person1.png',
-    socialLinks: {},
+    photo: getTeamMemberPhoto(index),
+    socialLinks: getTeamMemberSocialLinks(index),
   }));
 
-  const testimonials: Testimonial[] = rawTestimonials.map(t => ({
+  const testimonials: Testimonial[] = rawTestimonials.map((t, index) => ({
     id: t.id,
     quote: t.quote ?? '',
     quoteAr: t.quote ?? '',
@@ -60,7 +66,7 @@ export default async function HomePage({ params }: Props) {
     nameAr: t.name ?? '',
     role: t.role ?? '',
     roleAr: t.role ?? '',
-    photo: getStrapiMediaUrl(t.photo?.url) ?? '/images/person1.png',
+    photo: getTestimonialPhoto(index),
   }));
 
   const clientsConfig: ClientsConfig = {

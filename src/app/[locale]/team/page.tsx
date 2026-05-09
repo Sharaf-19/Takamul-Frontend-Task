@@ -2,12 +2,16 @@
 
 import { getTeamMembers } from '@/lib/api/team';
 import { getTestimonials } from '@/lib/api/testimonials';
-import { getStrapiMediaUrl } from '@/lib/api/strapi';
 import { TeamMember } from '@/types/team';
 import { Testimonial, ClientsConfig } from '@/types/client';
 import HeroShort from '@/components/sections/HeroShort';
 import TeamSection from '@/components/sections/TeamSection';
 import ClientsSection from '@/components/sections/ClientSection';
+import {
+  getTeamMemberPhoto,
+  getTeamMemberSocialLinks,
+  getTestimonialPhoto,
+} from '@/lib/local-media';
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -29,17 +33,17 @@ export default async function TeamPage({ params }: Props) {
     getTestimonials(locale),
   ]);
 
-  const teamMembers: TeamMember[] = rawTeam.map(member => ({
+  const teamMembers: TeamMember[] = rawTeam.map((member, index) => ({
     id: member.id,
     name: member.name ?? '',
     nameAr: member.name ?? '',
     role: member.role ?? '',
     roleAr: member.role ?? '',
-    photo: getStrapiMediaUrl(member.photo?.url) ?? '/images/person1.png',
-    socialLinks: {},
+    photo: getTeamMemberPhoto(index),
+    socialLinks: getTeamMemberSocialLinks(index),
   }));
 
-  const testimonials: Testimonial[] = rawTestimonials.map(t => ({
+  const testimonials: Testimonial[] = rawTestimonials.map((t, index) => ({
     id: t.id,
     quote: t.quote ?? '',
     quoteAr: t.quote ?? '',
@@ -47,7 +51,7 @@ export default async function TeamPage({ params }: Props) {
     nameAr: t.name ?? '',
     role: t.role ?? '',
     roleAr: t.role ?? '',
-    photo: getStrapiMediaUrl(t.photo?.url) ?? '/images/person1.png',
+    photo: getTestimonialPhoto(index),
   }));
 
   const clientsConfig: ClientsConfig = {
