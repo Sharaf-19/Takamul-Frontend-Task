@@ -36,7 +36,7 @@ export default async function HomePage({ params }: Props) {
       ctaLabelAr: slide.ctaLabel ?? '',
       ctaUrl: slide.ctaUrl ?? '/services',
       backgroundImage: getStrapiMediaUrl(slide.backgroundImage?.url) ?? '/images/hero-bg-1.jpg',
-      personImage: getStrapiMediaUrl(slide.personImage?.url) ?? null,
+      personImage: getStrapiMediaUrl(slide.personImage?.url) ?? 'images/owner.svg',
       type: isVideoSlide ? ('video' as const) : ('image' as const),
       videoUrl: isVideoSlide ? '/images/hero-video.mp4' : undefined,
     };
