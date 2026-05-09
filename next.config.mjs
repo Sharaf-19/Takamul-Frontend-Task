@@ -12,6 +12,11 @@ const nextConfig = {
         port: '1337',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'takamul-cms-strapi-task-production.up.railway.app',
+        pathname: '/uploads/**',
+      },
     ],
   },
 };
