@@ -1,15 +1,17 @@
-//src/i18n.ts
+// src/i18n.ts
 
 import { getRequestConfig } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 const locales = ['en', 'ar'];
 
-export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale)) notFound();
+export default getRequestConfig(async ({ requestLocale }) => {
+  const locale = await requestLocale;
+
+  if (!locale || !locales.includes(locale)) notFound();
 
   return {
-    // Notice the path goes up ONE folder now (../) instead of two (../../)
+    locale,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

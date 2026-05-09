@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import { DM_Sans, Tajawal } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import StoreProvider from '@/store/StoreProvider';
 import Navbar from '@/components/layout/Navbar';
@@ -34,6 +34,7 @@ interface Props {
 }
 
 export default async function LocaleLayout({ children, params: { locale } }: Props) {
+  setRequestLocale(locale);
   if (!locales.includes(locale)) notFound();
 
   const messages = await getMessages();
