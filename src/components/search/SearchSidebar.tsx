@@ -40,11 +40,11 @@ export default function SearchSidebar({
   return (
     <aside className='w-full md:w-[140px] shrink-0'>
       {/* Query label */}
-      <p className='text-text-muted text-[12px] uppercase tracking-wide mb-3'>
+      <p className='text-text-muted text-[12px] uppercase tracking-wide mb-12'>
         {isAr ? 'نتائج' : 'Results'}
       </p>
 
-      <div className='flex md:flex-col gap-1'>
+      <div className='flex md:flex-col gap-1 bg-gray-50 h-36'>
         {tabs.map(tab => {
           const isActive = activeCategory === tab.key;
           const label = isAr ? tab.labelAr : tab.labelEn;
@@ -58,7 +58,7 @@ export default function SearchSidebar({
                 rounded-sm transition-colors duration-200
                 ${
                   isActive
-                    ? 'text-[#4B2615] font-bold'
+                    ? 'text-text-primary font-bold'
                     : 'text-text-muted hover:text-text-primary'
                 }
               `}>

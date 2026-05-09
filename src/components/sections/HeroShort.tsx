@@ -7,7 +7,7 @@ interface Props {
   backgroundImage?: string;
 }
 
-export default function HeroShort({ title, backgroundImage = '/images/hero-bg-1.jpg' }: Props) {
+export default function HeroShort({ title, backgroundImage = '/images/hero-bg-5.webp' }: Props) {
   return (
     <section className='relative w-full h-[260px] overflow-hidden'>
       {/* Background image */}
@@ -16,17 +16,17 @@ export default function HeroShort({ title, backgroundImage = '/images/hero-bg-1.
         alt={title}
         fill
         priority
-        className='object-cover'
+        className='object-cover object-top'
         sizes='100vw'
       />
 
       {/* Brown gradient overlay — same as homepage hero */}
-      <div
+      {/* <div
         className='absolute inset-0'
         style={{
           background: 'linear-gradient(to right, rgba(75,38,21,0.68) 0%, rgba(75,38,21,0.28) 100%)',
         }}
-      />
+      /> */}
 
       {/* Page title — bottom left */}
       <div className='relative z-10 mx-auto max-w-container px-6 h-full flex items-end pb-8'>

@@ -1,11 +1,14 @@
+// src/app/[locale]/layout.tsx
+
 import type { Metadata } from 'next';
-import { DM_Sans, Tajawal } from 'next/font/google';import { NextIntlClientProvider } from 'next-intl';
+import { DM_Sans, Tajawal } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import StoreProvider from '@/store/StoreProvider';
 import Navbar from '@/components/layout/Navbar';
-import '../globals.css';
 import Footer from '@/components/layout/Footer';
+import '../globals.css';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -39,8 +42,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
   return (
     <html lang={locale} dir={dir} className={fontClass}>
-      {/* Clean body - layout is handled by globals.css */}
-      <body className={locale === 'ar' ? 'font-tajawal' : 'font-inter'}>
+      <body className={locale === 'ar' ? 'font-tajawal' : 'font-dm-sans'}>
         <NextIntlClientProvider messages={messages}>
           <StoreProvider>
             <Navbar locale={locale} />
