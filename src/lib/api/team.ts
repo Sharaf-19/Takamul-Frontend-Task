@@ -4,15 +4,20 @@ import { strapiGet } from './strapi';
 import { StrapiCollection, StrapiTeamMember } from '@/types/strapi';
 
 export async function getTeamMembers(locale: string): Promise<StrapiTeamMember[]> {
-  const data = await strapiGet<StrapiCollection<StrapiTeamMember>>('/team-members', {
-    locale,
-    'populate[photo][fields][0]': 'url',
-    'populate[photo][fields][1]': 'alternativeText',
-    'sort[0]': 'order:asc',
-    'pagination[pageSize]': '50',
-  });
+  try {
+    const data = await strapiGet<StrapiCollection<StrapiTeamMember>>('/team-members', {
+      locale,
+      'populate[photo][fields][0]': 'url',
+      'populate[photo][fields][1]': 'alternativeText',
+      'sort[0]': 'order:asc',
+      'pagination[pageSize]': '50',
+    });
 
-  return data.data;
+    return data.data;
+  } catch (error) {
+    console.warn('Failed to fetch team members from Strapi.', error);
+    return [];
+  }
 }
 
 export async function searchTeamMembers(

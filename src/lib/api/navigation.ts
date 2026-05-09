@@ -4,20 +4,30 @@ import { strapiGet } from './strapi';
 import { StrapiCollection, StrapiNavItem, StrapiFooterConfig } from '@/types/strapi';
 
 export async function getNavLinks(locale: string): Promise<StrapiNavItem[]> {
-  const data = await strapiGet<StrapiCollection<StrapiNavItem>>('/navigations', {
-    locale,
-    'sort[0]': 'order:asc',
-    'pagination[pageSize]': '20',
-  });
+  try {
+    const data = await strapiGet<StrapiCollection<StrapiNavItem>>('/navigations', {
+      locale,
+      'sort[0]': 'order:asc',
+      'pagination[pageSize]': '20',
+    });
 
-  return data.data;
+    return data.data;
+  } catch (error) {
+    console.warn('Failed to fetch navigation links from Strapi.', error);
+    return [];
+  }
 }
 
 export async function getFooterConfig(locale: string): Promise<StrapiFooterConfig | null> {
-  const data = await strapiGet<StrapiCollection<StrapiFooterConfig>>('/footer-configs', {
-    locale,
-    'pagination[pageSize]': '1',
-  });
+  try {
+    const data = await strapiGet<StrapiCollection<StrapiFooterConfig>>('/footer-configs', {
+      locale,
+      'pagination[pageSize]': '1',
+    });
 
-  return data.data[0] ?? null;
+    return data.data[0] ?? null;
+  } catch (error) {
+    console.warn('Failed to fetch footer config from Strapi.', error);
+    return null;
+  }
 }
