@@ -1,13 +1,11 @@
-// src/lib/mock/about.ts
-
 export const aboutContent = {
   heading: 'About Us',
   headingAr: 'من نحن',
 
   intro:
-    'IO-TECH is one of the leading legal and technology advisory firms in the Kingdom of Saudi Arabia. We combine deep legal expertise with modern technology solutions to serve individuals, companies, and institutions across all sectors.',
+    'Bin Hindi Law Company is one of the leading legal and technology advisory firms in the Kingdom of Saudi Arabia. We combine deep legal expertise with modern technology solutions to serve individuals, companies, and institutions across all sectors.',
   introAr:
-    'تُعدّ IO-TECH من أبرز شركات الاستشارات القانونية والتقنية في المملكة العربية السعودية. نجمع بين الخبرة القانونية العميقة وحلول التكنولوجيا الحديثة لخدمة الأفراد والشركات والمؤسسات في جميع القطاعات.',
+    'تُعدّ Bin Hindi Law Company من أبرز شركات الاستشارات القانونية والتقنية في المملكة العربية السعودية. نجمع بين الخبرة القانونية العميقة وحلول التكنولوجيا الحديثة لخدمة الأفراد والشركات والمؤسسات في جميع القطاعات.',
 
   mission: {
     heading: 'Our Mission',

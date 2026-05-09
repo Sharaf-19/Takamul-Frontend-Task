@@ -1,47 +1,44 @@
+// src/app/[locale]/services/[slug]/page.tsx
+
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { getServiceBySlug, getAllServiceSlugs } from '@/lib/mock/services';
+import { getServiceBySlug, getAllServiceSlugs } from '@/lib/api/services';
 import HeroShort from '@/components/sections/HeroShort';
+import StrapiBlocksRenderer from '@/components/ui/StrapiBlocksRenderer';
 
 interface Props {
   params: { locale: string; slug: string };
 }
 
-export function generateStaticParams() {
-  const slugs = getAllServiceSlugs();
+export async function generateStaticParams() {
+  const slugs = await getAllServiceSlugs();
   const locales = ['en', 'ar'];
-
   return locales.flatMap(locale => slugs.map(slug => ({ locale, slug })));
 }
 
-export function generateMetadata({ params: { locale, slug } }: Props) {
-  const service = getServiceBySlug(slug);
+export async function generateMetadata({ params: { locale, slug } }: Props) {
+  const service = await getServiceBySlug(slug, locale);
   if (!service) return {};
-
-  const isAr = locale === 'ar';
   return {
-    title: isAr ? service.seoTitleAr : service.seoTitle,
-    description: isAr ? service.seoDescriptionAr : service.seoDescription,
+    title: service.seoTitle,
+    description: service.seoDescription,
   };
 }
 
-export default function ServiceDetailPage({ params: { locale, slug } }: Props) {
-  const service = getServiceBySlug(slug);
+export default async function ServiceDetailPage({ params: { locale, slug } }: Props) {
+  const service = await getServiceBySlug(slug, locale);
   if (!service) notFound();
 
   const isAr = locale === 'ar';
-  const title = isAr ? service.titleAr : service.title;
-  const excerpt = isAr ? service.excerptAr : service.excerpt;
   const backLabel = isAr ? 'رجوع' : 'Back';
 
   return (
     <main>
-      <HeroShort title='Services' />
+      <HeroShort title={service.title ?? ''} />
 
       <div className='bg-white'>
         <div className='mx-auto max-w-container px-6 py-10 md:py-16'>
-          {/* Back link */}
           <div className='mb-10'>
             <Link
               href={`/${locale}/services`}
@@ -52,50 +49,16 @@ export default function ServiceDetailPage({ params: { locale, slug } }: Props) {
             </Link>
           </div>
 
-          {/* Content wrapper */}
           <div className='w-full max-w-[1000px] font-dm-sans'>
-            {/* Page title */}
             <h1 className='text-text-primary text-[28px] md:text-[40px] font-bold leading-tight mb-8'>
-              {title}
+              {service.title}
             </h1>
 
-            {/* Intro / excerpt */}
-            <p className='text-text-muted text-[16px] leading-[1.7] mb-12'>{excerpt}</p>
+            <p className='text-text-muted text-[16px] leading-[1.7] mb-12'>{service.excerpt}</p>
 
-            {/* Body sections */}
-            {service.body.map((section, index) => {
-              const subheading = isAr ? section.subheadingAr : section.subheading;
-              const paragraph = isAr ? section.paragraphAr : section.paragraph;
-              const bullets = isAr ? section.bulletsAr : section.bullets;
-
-              return (
-                <div key={index} className='mb-10 last:mb-0'>
-                  <h2 className='text-text-primary text-[18px] md:text-[20px] font-bold mb-4'>
-                    {subheading}
-                  </h2>
-
-                  <p className='text-text-muted text-[16px] leading-[1.7] mb-6'>{paragraph}</p>
-
-                  {/* Bullet list — Figma style: Gray line left, Rectangular bullets, Spaced */}
-                  {bullets && bullets.length > 0 && (
-                    <div className={`border-l-2 border-gray-300 ${isAr ? 'pr-6' : 'pl-6'}`}>
-                      <ul className='space-y-4'>
-                        {bullets.map((bullet, bulletIndex) => (
-                          <li key={bulletIndex} className='flex items-start gap-3'>
-                            {/* Rectangular bullet marker */}
-                            <span className='mt-1.5 text-[16px] text-text-primary ml-4 shrink-0'>■</span>
-                            {/* Bullet text */}
-                            <span className='text-text-muted text-[16px] leading-[1.7]'>
-                              {bullet}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {service.body && service.body.length > 0 && (
+              <StrapiBlocksRenderer blocks={service.body} locale={locale} />
+            )}
           </div>
         </div>
       </div>

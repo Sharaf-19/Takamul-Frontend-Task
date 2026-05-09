@@ -1,45 +1,43 @@
 'use client';
-// src/components/sections/ClientsSection.tsx
+// src/components/sections/ClientSection.tsx
 
 import { useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { clientsConfig } from '@/lib/mock/clients';
+import { ClientsConfig } from '@/types/client';
 
 interface Props {
   locale: string;
+  config: ClientsConfig;
 }
 
-export default function ClientsSection({ locale }: Props) {
+export default function ClientsSection({ locale, config }: Props) {
   const [index, setIndex] = useState(0);
   const isAr = locale === 'ar';
 
-  const { heading, headingAr, intro, introAr, testimonials } = clientsConfig;
+  const { heading, headingAr, intro, introAr, testimonials } = config;
 
   const prev = () => setIndex(i => (i - 1 + testimonials.length) % testimonials.length);
   const next = () => setIndex(i => (i + 1) % testimonials.length);
 
   const testimonial = testimonials[index];
 
+  if (!testimonial) return null;
+
   return (
     <section className='bg-brown-dark py-16 md:py-24'>
       <div className='mx-auto max-w-container px-6'>
-        {/* Heading — DM Sans, 700, 40px, lh 52px */}
         <h2
           className='font-dm-sans text-white font-bold leading-[52px] tracking-normal mb-6
             text-[28px] sm:text-[40px]'>
           {isAr ? headingAr : heading}
         </h2>
 
-        {/* Intro paragraph */}
-        <p
-          className='font-dm-sans text-white/70 text-[18px] leading-tight max-w-[579px] mb-10 font-normal'>
+        <p className='font-dm-sans text-white/70 text-[18px] leading-tight max-w-[579px] mb-10 font-normal'>
           {isAr ? introAr : intro}
         </p>
 
-        {/* Testimonial row */}
         <div className='flex flex-col sm:flex-row items-start gap-6 sm:gap-12'>
-          {/* Photo — 374×374 */}
           <div className='relative shrink-0 w-[200px] h-[220px] sm:w-[374px] sm:h-[374px] overflow-hidden'>
             <Image
               src={testimonial.photo}
@@ -50,9 +48,7 @@ export default function ClientsSection({ locale }: Props) {
             />
           </div>
 
-          {/* Right column — quote top-aligned, name/role bottom-aligned with image */}
           <div className='flex flex-col justify-between w-full sm:h-[374px]'>
-            {/* Quote — DM Sans, 400, 24px, lh 40px, opacity 60%, 728×200 */}
             <p
               className='font-dm-sans text-white/60 font-normal tracking-normal
                 max-w-[728px] max-h-[200px] overflow-hidden
@@ -60,26 +56,17 @@ export default function ClientsSection({ locale }: Props) {
               {isAr ? testimonial.quoteAr : testimonial.quote}
             </p>
 
-            {/* Name + Role */}
             <div>
-              {/* Name — Poppins, 600, 24px, lh 45px */}
-              <p
-                className='text-white font-semibold tracking-normal
-                  text-[18px] leading-[30px] sm:text-[24px] sm:leading-[45px]'>
+              <p className='text-white font-semibold tracking-normal text-[18px] leading-[30px] sm:text-[24px] sm:leading-[45px]'>
                 {isAr ? testimonial.nameAr : testimonial.name}
               </p>
-              {/* Role — Poppins, 14px, lh 24px */}
-              <p
-                className='text-white/50 tracking-normal
-                  text-[12px] leading-[20px] sm:text-[14px] sm:leading-[24px]'
-                style={{ fontFamily: 'Poppins' }}>
+              <p className='text-white/50 tracking-normal text-[12px] leading-[20px] sm:text-[14px] sm:leading-[24px]'>
                 {isAr ? testimonial.roleAr : testimonial.role}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Navigation arrows */}
         <div className='flex items-center justify-end gap-3 mt-10'>
           <button
             onClick={prev}

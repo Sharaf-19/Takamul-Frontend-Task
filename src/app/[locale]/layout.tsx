@@ -24,8 +24,8 @@ const tajawal = Tajawal({
 const locales = ['en', 'ar'];
 
 export const metadata: Metadata = {
-  title: 'IO-TECH',
-  description: 'IO-TECH Services',
+  title: 'Bin Hindi Law Company',
+  description: 'Bin Hindi Law Company',
 };
 
 interface Props {

@@ -9,11 +9,11 @@ interface Props {
 
 export function generateMetadata({ params: { locale } }: Props) {
   return {
-    title: locale === 'ar' ? 'من نحن | IO-TECH' : 'About Us | IO-TECH',
+    title: locale === 'ar' ? 'من نحن | Bin Hindi' : 'About Us | Bin Hindi',
     description:
       locale === 'ar'
-        ? 'تعرّف على IO-TECH ومهمتنا ورؤيتنا وقيمنا'
-        : 'Learn about IO-TECH, our mission, vision and values',
+        ? 'تعرّف على Bin Hindi ومهمتنا ورؤيتنا وقيمنا'
+        : 'Learn about Bin Hindi, our mission, vision and values',
   };
 }
 
@@ -27,14 +27,12 @@ export default function AboutPage({ params: { locale } }: Props) {
 
       <div className='bg-white'>
         <div className='mx-auto max-w-container px-6 py-14'>
-          {/* Intro */}
           <div className='max-w-[720px] mb-14'>
             <p className='text-text-muted text-[15px] leading-[1.8]'>
               {isAr ? c.introAr : c.intro}
             </p>
           </div>
 
-          {/* Stats row */}
           <div className='grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 py-10 border-y border-gray-100'>
             {c.stats.map((stat, i) => (
               <div key={i} className='text-center'>
@@ -46,9 +44,7 @@ export default function AboutPage({ params: { locale } }: Props) {
             ))}
           </div>
 
-          {/* Mission + Vision — two columns on desktop */}
           <div className='grid grid-cols-1 md:grid-cols-2 gap-10 mb-16'>
-            {/* Mission */}
             <div>
               <h2 className='text-text-primary text-[20px] font-bold mb-4'>
                 {isAr ? c.mission.headingAr : c.mission.heading}
@@ -58,7 +54,6 @@ export default function AboutPage({ params: { locale } }: Props) {
               </p>
             </div>
 
-            {/* Vision */}
             <div>
               <h2 className='text-text-primary text-[20px] font-bold mb-4'>
                 {isAr ? c.vision.headingAr : c.vision.heading}
@@ -69,7 +64,6 @@ export default function AboutPage({ params: { locale } }: Props) {
             </div>
           </div>
 
-          {/* Values */}
           <div>
             <h2 className='text-text-primary text-[20px] font-bold mb-8'>
               {isAr ? c.values.headingAr : c.values.heading}
@@ -77,7 +71,6 @@ export default function AboutPage({ params: { locale } }: Props) {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
               {c.values.items.map((value, i) => (
                 <div key={i} className='bg-off-white px-6 py-8 rounded-sm'>
-                  {/* Number indicator */}
                   <p className='text-brown-dark text-[28px] font-bold leading-none mb-4'>
                     0{i + 1}
                   </p>
