@@ -1,8 +1,6 @@
-// src/app/[locale]/services/[slug]/page.tsx
-
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getServiceBySlug, getAllServiceSlugs } from '@/lib/mock/services';
 import HeroShort from '@/components/sections/HeroShort';
 
@@ -10,7 +8,6 @@ interface Props {
   params: { locale: string; slug: string };
 }
 
-// Pre-render all service slugs at build time
 export function generateStaticParams() {
   const slugs = getAllServiceSlugs();
   const locales = ['en', 'ar'];
@@ -18,7 +15,6 @@ export function generateStaticParams() {
   return locales.flatMap(locale => slugs.map(slug => ({ locale, slug })));
 }
 
-// SEO metadata per service + locale
 export function generateMetadata({ params: { locale, slug } }: Props) {
   const service = getServiceBySlug(slug);
   if (!service) return {};
@@ -41,28 +37,30 @@ export default function ServiceDetailPage({ params: { locale, slug } }: Props) {
 
   return (
     <main>
-      {/* Short hero — reuses same component as team page */}
-      <HeroShort title='Services' backgroundImage={service.coverImage} />
+      <HeroShort title='Services' />
 
       <div className='bg-white'>
-        <div className='mx-auto max-w-container px-6 py-10'>
+        <div className='mx-auto max-w-container px-6 py-10 md:py-16'>
           {/* Back link */}
-          <Link
-            href={`/${locale}/services`}
-            className='inline-flex items-center gap-1 text-text-muted text-[14px] hover:text-text-primary transition-colors duration-200 mb-6'>
-            {isAr ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-            {backLabel}
-          </Link>
+          <div className='mb-10'>
+            <Link
+              href={`/${locale}/services`}
+              className='inline-flex items-center gap-2 font-medium text-[14px] transition-opacity duration-200 hover:opacity-70'
+              style={{ color: '#4B2615' }}>
+              {isAr ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
+              {backLabel}
+            </Link>
+          </div>
 
-          {/* Content — single column, max 720px */}
-          <div className='max-w-[720px]'>
+          {/* Content wrapper */}
+          <div className='w-full max-w-[1000px] font-dm-sans'>
             {/* Page title */}
-            <h1 className='text-text-primary text-[26px] md:text-[28px] font-bold leading-tight mb-4'>
+            <h1 className='text-text-primary text-[28px] md:text-[40px] font-bold leading-tight mb-8'>
               {title}
             </h1>
 
             {/* Intro / excerpt */}
-            <p className='text-text-muted text-[14px] leading-[1.7] mb-8'>{excerpt}</p>
+            <p className='text-text-muted text-[16px] leading-[1.7] mb-12'>{excerpt}</p>
 
             {/* Body sections */}
             {service.body.map((section, index) => {
@@ -71,25 +69,29 @@ export default function ServiceDetailPage({ params: { locale, slug } }: Props) {
               const bullets = isAr ? section.bulletsAr : section.bullets;
 
               return (
-                <div key={index} className='mb-8'>
-                  {/* Subheading */}
-                  <h2 className='text-text-primary text-[16px] font-bold mb-2'>{subheading}</h2>
+                <div key={index} className='mb-10 last:mb-0'>
+                  <h2 className='text-text-primary text-[18px] md:text-[20px] font-bold mb-4'>
+                    {subheading}
+                  </h2>
 
-                  {/* Paragraph */}
-                  <p className='text-text-primary text-[14px] leading-[1.7] mb-3'>{paragraph}</p>
+                  <p className='text-text-muted text-[16px] leading-[1.7] mb-6'>{paragraph}</p>
 
-                  {/* Bullet list */}
+                  {/* Bullet list — Figma style: Gray line left, Rectangular bullets, Spaced */}
                   {bullets && bullets.length > 0 && (
-                    <ul className='ps-5 space-y-1' dir={isAr ? 'rtl' : 'ltr'}>
-                      {bullets.map((bullet, bulletIndex) => (
-                        <li
-                          key={bulletIndex}
-                          className='text-text-primary text-[14px] leading-[1.7] list-none flex items-start gap-2'>
-                          <span className='mt-1 shrink-0 text-[10px]'>■</span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className={`border-l-2 border-gray-300 ${isAr ? 'pr-6' : 'pl-6'}`}>
+                      <ul className='space-y-4'>
+                        {bullets.map((bullet, bulletIndex) => (
+                          <li key={bulletIndex} className='flex items-start gap-3'>
+                            {/* Rectangular bullet marker */}
+                            <span className='mt-1.5 text-[16px] text-text-primary ml-4 shrink-0'>■</span>
+                            {/* Bullet text */}
+                            <span className='text-text-muted text-[16px] leading-[1.7]'>
+                              {bullet}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               );

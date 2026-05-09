@@ -17,7 +17,7 @@ export default function TeamSection({ locale }: Props) {
       <div className='mx-auto max-w-container px-6'>
         {/* Section heading */}
         <div className='font-dm-sans text-center mb-10'>
-          <h2 className='text-[#4B2615] text-[40px] font-bold leading-tight mb-3'>{heading}</h2>
+          <h2 className='text-text-primary text-[40px] font-bold leading-tight mb-3'>{heading}</h2>
           <p className='text-text-muted text-[14px] leading-[1.7] max-w-[480px] mx-auto'>
             {subtext}
           </p>
