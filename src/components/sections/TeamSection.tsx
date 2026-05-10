@@ -12,9 +12,9 @@ const teamSection = {
   heading: 'Our Team',
   headingAr: 'فريقنا',
   subtext:
-    "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s.",
+    'Our team combines legal knowledge, commercial awareness, and practical experience to guide clients with clear advice and dependable representation.',
   subtextAr:
-    'نص تجريبي يُستخدم في صناعة الطباعة والتنضيد. لوريم إيبسوم هو النص التجريبي المعياري في الصناعة منذ القرن السادس عشر.',
+    'يجمع فريقنا بين الخبرة القانونية والفهم التجاري والخبرة العملية لتقديم استشارات واضحة وتمثيل مهني موثوق لعملائنا.',
 };
 
 export default function TeamSection({ locale, members }: Props) {
