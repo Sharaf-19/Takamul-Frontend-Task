@@ -36,7 +36,7 @@ export default function ContactPage({ params: { locale } }: Props) {
     <main>
       <HeroShort title={pageTitle} />
 
-      <div className='bg-white'>
+      <div className='bg-page-bg'>
         <div className='mx-auto max-w-container px-6 py-14'>
           <div className='grid grid-cols-1 md:grid-cols-[1fr_320px] gap-14'>
             <div>

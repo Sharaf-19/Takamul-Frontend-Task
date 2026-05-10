@@ -42,8 +42,22 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
   const fontClass = locale === 'ar' ? tajawal.variable : dmSans.variable;
 
   return (
-    <html lang={locale} dir={dir} className={fontClass}>
-      <body className={locale === 'ar' ? 'font-tajawal' : 'font-dm-sans'}>
+    <html lang={locale} dir={dir} className={fontClass} suppressHydrationWarning>
+      <body className={`${locale === 'ar' ? 'font-tajawal' : 'font-dm-sans'} bg-page-bg text-text-primary`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+                } catch (e) {
+                  document.documentElement.dataset.theme = 'light';
+                }
+              })();
+            `,
+          }}
+        />
         <NextIntlClientProvider messages={messages}>
           <StoreProvider>
             <Navbar locale={locale} />

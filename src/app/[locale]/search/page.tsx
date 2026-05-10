@@ -79,7 +79,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
     <main>
       <HeroShort title='' />
 
-      <div className='bg-white min-h-[calc(100vh-68px)]'>
+      <div className='bg-page-bg min-h-[calc(100vh-68px)]'>
         <div className='mx-auto max-w-container px-6 py-8'>
           <div className='flex flex-col md:flex-row gap-8'>
             <SearchSidebar

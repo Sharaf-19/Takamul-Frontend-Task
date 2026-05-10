@@ -5,12 +5,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brown-dark': '#4B2615',
-        'brown-mid': '#4B2615',
-        'off-white': '#F5F3EF',
-        'text-primary': '#4B2615',
-        'text-muted': '#6B6560',
-        'gold-accent': '#8B6914',
+        'brown-dark': 'rgb(var(--color-brown-dark) / <alpha-value>)',
+        'brown-mid': 'rgb(var(--color-brown-mid) / <alpha-value>)',
+        'off-white': 'rgb(var(--color-off-white) / <alpha-value>)',
+        'text-primary': 'rgb(var(--color-text-primary) / <alpha-value>)',
+        'text-muted': 'rgb(var(--color-text-muted) / <alpha-value>)',
+        'gold-accent': 'rgb(var(--color-gold-accent) / <alpha-value>)',
+        'page-bg': 'rgb(var(--color-page-bg) / <alpha-value>)',
+        'surface-bg': 'rgb(var(--color-surface-bg) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['var(--font-dm-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
