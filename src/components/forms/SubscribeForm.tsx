@@ -4,6 +4,8 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? 'http://localhost:1337';
+
 const schema = Yup.object({
   email: Yup.string().email('Invalid email').required('Required'),
 });
@@ -19,8 +21,22 @@ export default function SubscribeForm({ placeholder, buttonLabel }: Props) {
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting, setStatus, resetForm }) => {
       try {
-        // Will be wired to Strapi POST /api/subscribers when CMS is ready
-        await new Promise(resolve => setTimeout(resolve, 600)); // mock delay
+        const res = await fetch(`${STRAPI_URL}/api/subscribers`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            data: {
+              email: values.email,
+              subscribedAt: new Date().toISOString(),
+            },
+          }),
+        });
+
+        if (!res.ok) {
+          setStatus({ success: false });
+          return;
+        }
+
         resetForm();
         setStatus({ success: true });
       } catch {
@@ -68,13 +84,14 @@ export default function SubscribeForm({ placeholder, buttonLabel }: Props) {
         </p>
       )}
 
-      {/* Success / error status */}
+      {/* Success status */}
       {formik.status?.success === true && (
         <p className='text-white/70 text-[11px] ps-1' role='status'>
-          {/* Text will come from translation files */}
           Subscribed successfully.
         </p>
       )}
+
+      {/* Error status */}
       {formik.status?.success === false && (
         <p className='text-white/60 text-[11px] ps-1' role='alert'>
           Something went wrong. Please try again.
