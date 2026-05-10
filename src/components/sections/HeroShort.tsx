@@ -7,7 +7,7 @@ interface Props {
   backgroundImage?: string;
 }
 
-export default function HeroShort({ title, backgroundImage = '/images/hero-bg-5.webp' }: Props) {
+export default function HeroShort({ title, backgroundImage = '/images/hero-bg-2.webp' }: Props) {
   return (
     <section className='relative w-full h-[260px] overflow-hidden'>
       {/* Background image */}
