@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-brown-dark: 75 38 21;
+  --color-brown-mid: 75 38 21;
+  --color-off-white: 245 243 239;
+  --color-text-primary: 75 38 21;
+  --color-text-muted: 107 101 96;
+  --color-gold-accent: 139 105 20;
+  --color-page-bg: 255 255 255;
+  --color-surface-bg: 255 255 255;
+}
+
+html[data-theme='dark'] {
+  --color-brown-dark: 18 22 27;
+  --color-brown-mid: 34 40 46;
+  --color-off-white: 24 29 34;
+  --color-text-primary: 238 231 223;
+  --color-text-muted: 171 165 157;
+  --color-gold-accent: 198 164 92;
+  --color-page-bg: 15 18 21;
+  --color-surface-bg: 22 26 30;
+}
+
 html, body {
   height: 100%;
 }
@@ -9,6 +31,9 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+  background-color: rgb(var(--color-page-bg));
+  color: rgb(var(--color-text-primary));
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 main {

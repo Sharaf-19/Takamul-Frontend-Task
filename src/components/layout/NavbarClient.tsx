@@ -9,6 +9,7 @@ import NavLinks from './NavLinks';
 import LanguageSwitcher from './LanguageSwitcher';
 import SearchModal from './SearchModal';
 import MobileMenu from './MobileMenu';
+import ThemeToggle from './ThemeToggle';
 
 interface Props {
   locale: string;
@@ -42,6 +43,8 @@ export default function NavbarClient({ locale, links, serviceColumns }: Props) {
 
         {/* Language switcher */}
         <LanguageSwitcher locale={locale} />
+
+        <ThemeToggle />
 
         <a
           href={`/${locale}/contact`}

@@ -25,7 +25,7 @@ export default function AboutPage({ params: { locale } }: Props) {
     <main>
       <HeroShort title={isAr ? c.headingAr : c.heading} />
 
-      <div className='bg-white'>
+      <div className='bg-page-bg'>
         <div className='mx-auto max-w-container px-6 py-14'>
           <div className='max-w-[720px] mb-14'>
             <p className='text-text-muted text-[15px] leading-[1.8]'>

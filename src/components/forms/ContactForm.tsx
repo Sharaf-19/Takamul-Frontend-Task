@@ -49,7 +49,7 @@ export default function ContactForm({ locale }: Props) {
   });
 
   const inputClass = (field: keyof typeof formik.touched) => `
-    w-full bg-white border text-text-primary text-[14px] px-4 py-3 rounded-sm
+    w-full bg-surface-bg border text-text-primary text-[14px] px-4 py-3 rounded-sm
     placeholder-text-muted/50 outline-none transition-colors duration-200
     ${
       formik.touched[field] && formik.errors[field]

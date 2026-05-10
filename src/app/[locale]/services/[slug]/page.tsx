@@ -42,7 +42,7 @@ export default async function ServiceDetailPage({ params }: Props) {
     <main>
       <HeroShort title={service.title ?? ''} />
 
-      <div className='bg-white'>
+      <div className='bg-page-bg'>
         <div className='mx-auto max-w-container px-6 py-10 md:py-16'>
           <div className='mb-10'>
             <Link
