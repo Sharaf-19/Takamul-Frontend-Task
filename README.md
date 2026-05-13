@@ -1,4 +1,4 @@
-# IO-TECH Frontend
+# Takamul Frontend
 
 Frontend assessment delivery built with Next.js 14 App Router, TypeScript, Tailwind CSS, `next-intl`, Redux Toolkit, and a Strapi-backed content layer.
 
