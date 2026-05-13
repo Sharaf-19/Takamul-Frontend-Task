@@ -58,7 +58,6 @@ Core fetch behavior lives in `src/lib/api/strapi.ts` and uses `fetch(..., { next
 
 ## Known Gaps
 
-- `SubscribeForm` currently validates and shows UX states on the frontend, but the final subscriber POST integration is still marked as pending.
 - `ContactForm` submit behavior is still mocked.
 - Some sections still depend on local mock data during CMS transition.
 - Both `next.config.ts` and `next.config.mjs` exist and should be consolidated.
